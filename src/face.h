@@ -19,10 +19,10 @@ class Face : public Halfspace
   friend class Solid;
   
   //  List of pointers to the corners which touch this face
-  vector<Vector *> touching_corners;
+  std::vector<Vector *> touching_corners;
 
   //  List of pointers to the Faces which touch this face
-  vector<Face *> adjacent_faces;
+  std::vector<Face *> adjacent_faces;
   
 public:
   

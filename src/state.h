@@ -1,7 +1,7 @@
 #ifndef H_STATE
 #define H_STATE
 
-#include <bool.h>
+//#include <bool.h>
 #include "space.h"
 
 typedef struct {

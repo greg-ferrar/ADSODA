@@ -42,7 +42,7 @@ AMatrix::AMatrix(long pnumRows, long pnumColumns)
     ASSERT(elements[row] != NULL);
   }
 
-}  //==== AMatrix::AMatrix() ====\\
+}  //==== AMatrix::AMatrix() ====//
 
 
 
@@ -74,7 +74,7 @@ AMatrix::AMatrix(const AMatrix &AMatrix)
     memmove(elements[row], AMatrix.elements[row], numColumns * sizeof(double));
   }
 
-}  //==== AMatrix::AMatrix() ====\\
+}  //==== AMatrix::AMatrix() ====//
 
 
 
@@ -97,7 +97,7 @@ AMatrix::~AMatrix(void)
   // Free memory used by row pointer array		
   free(elements);
 
-}	//==== AMatrix::~AMatrix() ====\\
+} //==== AMatrix::~AMatrix() ====//
 
 
 
@@ -124,12 +124,12 @@ void AMatrix::MakeIdentity(void)
     // Fill in this row
     for (column = 0; column < numColumns; column++) {
       *thisElement = (column == row);
-      *thisElement++;
+      thisElement++;
     }
     
   }  // for row
 
-}  //==== AMatrix::MakeIdentity() ====\\
+} //==== AMatrix::MakeIdentity() ====//
 
 
 
@@ -147,7 +147,7 @@ void AMatrix::Invert(void)
   //  UNIMPLEMENTED
   ASSERT(0);
 
-}  //==== AMatrix::Invert() ====\\
+}  //==== AMatrix::Invert() ====//
 
 
 
@@ -168,7 +168,7 @@ double AMatrix::Determinant(void)
 
   return 0;
 
-}  //==== AMatrix::Determinant() ====\\
+}  //==== AMatrix::Determinant() ====//
 
 
 
@@ -203,7 +203,7 @@ void AMatrix::operator = (const AMatrix& m) {
 
   }  // for rows
 	
-}	//==== AMatrix operator = ====\\
+} //==== AMatrix operator = ====//
 
 
 
@@ -245,7 +245,7 @@ AMatrix operator + (const AMatrix &m1, const AMatrix &m2)
 
   return sum;
 	
-}	//==== AMatrix operator + ====\\
+} //==== AMatrix operator + ====//
 
 
 
@@ -289,7 +289,7 @@ AMatrix operator - (AMatrix& m1, AMatrix& m2)
 
   return difference;
 	
-}  //==== AMatrix operator - ====\\
+} //==== AMatrix operator - ====//
 
 
 
@@ -332,7 +332,7 @@ AMatrix operator *(const AMatrix& m1, const AMatrix& m2)
 
   return product;
 	
-}	//==== AMatrix operator * ====\\
+} //==== AMatrix operator * ====//
 
 
 
@@ -369,7 +369,7 @@ Vector operator * (const AMatrix& m, const Vector& v)
   
   return product;
 	
-}  //==== AMatrix operator * ====\\
+}  //==== AMatrix operator * ====//
 
 
 
@@ -410,7 +410,7 @@ AMatrix operator * (double s, const AMatrix& m)
   
   return product;
   
-}  //==== AMatrix operator* ====\\
+}  //==== AMatrix operator* ====//
 
 
 

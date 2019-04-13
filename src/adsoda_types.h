@@ -10,16 +10,16 @@
 //#define VERY_SMALL_NUM	1E-15
 #define VERY_SMALL_NUM	1E-5
 
-#include <iostream.h>
+#include <iostream>
 
 
 void HandleAssertion(char a);
 //void HandleAssertion(bool a);
 #define ASSERT(a) { \
   if (!(a)) { \
-    cerr << "Assertion Failed, " << __FILE__ << ":" << __LINE__ << "\n"; \
-  *((char *) NULL) = 0; \
-  exit(-1); \
+    std::cerr << "Assertion Failed, " << __FILE__ << ":" << __LINE__ << "\n"; \
+    abort();					\
+    exit(-1);					\
   } \
 }
 

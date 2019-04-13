@@ -62,7 +62,7 @@ void initDemo(State &state) {
     state.demoSpace = init4DDemo();
   
   else {
-    cerr << "Error: there are only demos for state.dimensions 2, 3, and 4" << endl;
+    std::cerr << "Error: there are only demos for state.dimensions 2, 3, and 4" << std::endl;
     exit(-1);
   }
 

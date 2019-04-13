@@ -12,7 +12,7 @@
 #include "color.h"
 #include "vector.h"
 #include "light.h"
-#include <vector.h>
+#include <vector>
 #include "halfspace.h"
 
 class Vector;
@@ -25,13 +25,13 @@ class Space
 {
 
   Color ambient;
-  vector<Light> lights;
+  std::vector<Light> lights;
   long	dimension;
   
 
 public:
 
-  vector<Solid *> solids;
+  std::vector<Solid *> solids;
 	
   //  The (n-1)-space associate with this Space.
   //  Space *lowerSpace;
@@ -73,12 +73,12 @@ public:
   void DrawUsingOpenGL2D(bool outline, bool fill);
   void DrawUsingOpenGL3D(bool outline, bool fill);
 
-  bool IntersectHyperplanes(vector<Hyperplane *>& hyperplanes, Vector& intersection);
+  bool IntersectHyperplanes(std::vector<Hyperplane *>& hyperplanes, Vector& intersection);
   
   bool PointInsideHalfspace(Halfspace& halfspace, Vector& point);
-  bool PointInsideHalfspaces(vector<Halfspace *>& halfspaces, Vector& point);
+  bool PointInsideHalfspaces(std::vector<Halfspace *>& halfspaces, Vector& point);
   bool PointInsideOrOnHalfspace(Halfspace& halfspace, Vector& point);
-  bool PointInsideOrOnHalfspaces(vector<Halfspace *>& halfspaces, Vector& point);
+  bool PointInsideOrOnHalfspaces(std::vector<Halfspace *>& halfspaces, Vector& point);
   
 };
 

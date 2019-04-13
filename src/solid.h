@@ -10,7 +10,7 @@
 
 #include "color.h"
 #include "light.h"
-#include <vector.h>
+#include <vector>
 
 
 class AMatrix;
@@ -26,8 +26,8 @@ private:
 
   Solid *silhouette;
 
-  vector<Face *> faces;
-  vector<Vector *> corners;
+  std::vector<Face *> faces;
+  std::vector<Vector *> corners;
   bool adjacencies_valid;
    
 protected:
@@ -40,7 +40,7 @@ public:
   Solid(Solid &solid);
   ~Solid(void);
 
-  const vector<Vector *> &Corners(void) const;
+  const std::vector<Vector *> &Corners(void) const;
 
   void SetColor(double red, double green, double blue);
   void SetColor(Color& new_color);
@@ -54,16 +54,16 @@ public:
 
   //  void FindAllIntersections(vector<Face *>& intersected_faces, short first_available, short num_needed, long dimension);
 
-  void ProcessCorner(Vector *corner, vector<Face *>& contributing_faces);
+  void ProcessCorner(Vector *corner, std::vector<Face *>& contributing_faces);
   
-  void Project(vector<Solid *>& projected_solids, vector<Light>& lights, const Color &ambient);
+  void Project(std::vector<Solid *>& projected_solids, std::vector<Light>& lights, const Color &ambient);
   void Translate(Vector& offset);
   void Transform(const AMatrix& m);
   void AddFace(Face *face);
   bool IsEmpty(void);
   int OrderSolids(Solid& solid);
   void Duplicate(Solid& copy);
-  void Subtract(Solid& solid, vector<Solid *>& difference);
+  void Subtract(Solid& solid, std::vector<Solid *>& difference);
   
   void FindSilhouette(void);
   Solid *GetSilhouette(void);
@@ -73,7 +73,7 @@ public:
 
   void DrawUsingOpenGL1D(bool outline, bool fill);
   void DrawUsingOpenGL2D(bool outline, bool fill);
-  void DrawUsingOpenGL3D(vector<Light>& lights, const Color &ambient, bool outline, bool fill);
+  void DrawUsingOpenGL3D(std::vector<Light>& lights, const Color &ambient, bool outline, bool fill);
 
 
 #if 0

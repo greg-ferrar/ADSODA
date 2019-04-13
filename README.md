@@ -1,6 +1,4 @@
-ADSODA
-
-**Arbitrary-Dimensional Solid Object Display Algorithm**
+# ADSODA: Arbitrary-Dimensional Solid Object Display Algorithm
 
 by [Greg
 Ferrar](mailto:ferrar.greg@gmail.com)

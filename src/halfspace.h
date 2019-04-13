@@ -14,7 +14,8 @@
 
 
 #include "adsoda_types.h"
-#include "vector.h"
+#include "solid.h"
+#include <vector>
 
 class AMatrix;
 

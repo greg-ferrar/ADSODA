@@ -1,16 +1,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include "state.h"
-#include <iostream.h>
+#include <iostream>
 
 
-void parseArgs(State &state, int numArgs, const char **args) {
+void parseArgs(State &state, int numArgs, char **args) {
 
   for (int i = 0; i < numArgs; i++) {
 
     const char *option = args[i];
     
-    //    cout << ">>>> parsing ADSODA options: " << option << endl;
+    //    std::cout << ">>>> parsing ADSODA options: " << option << std::endl;
 
     if (!strcasecmp(option, "-dim")) {
       i++;
@@ -54,7 +54,7 @@ void parseArgs(State &state, int numArgs, const char **args) {
       state.drawcubeFlag = true;
 
     else
-      cout << "#### ERROR unknown ADSODA option: #" << option << "#" << endl;
+      std::cout << "#### ERROR unknown ADSODA option: #" << option << "#" << std::endl;
 
   }  // for
 
@@ -77,7 +77,7 @@ void parseArgs(State &state, char *arg_string) {
 
     if (*p == ' ') {
       *p = 0;
-      //      cout << "Got token: " << tokenstart << endl;
+      //      std::cout << "Got token: " << tokenstart << std::endl;
       args[i++] = tokenstart;
       tokenstart = p + 1;
     }
@@ -87,10 +87,10 @@ void parseArgs(State &state, char *arg_string) {
   }  // while p
 
   if (tokenstart != p) {
-    //    cout << "Got last token: " << tokenstart << endl;
+    //    std::cout << "Got last token: " << tokenstart << std::endl;
     args[i++] = tokenstart;
   }
 
-  parseArgs(state, i, args);
+  //  parseArgs(state, i, args);
 
 }  //=== parseArgs() ====//

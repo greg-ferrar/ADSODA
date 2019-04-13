@@ -14,7 +14,7 @@
 #include "solid.h"
 
 #include <stdlib.h>
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 
 
@@ -225,7 +225,7 @@ void Halfspace::Transform(const AMatrix& m)
 //|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //| Halfspace::DumpEquation
 //|
-//| Purpose: This method dumps the equation of this halfspace to cout.
+//| Purpose: This method dumps the equation of this halfspace to std::cout.
 //|
 //| Parameters: none
 //|_________________________________________________________________________________
@@ -242,23 +242,23 @@ void Halfspace::DumpEquation(void)
   
     // Just output - for -1
     if (coordinates[i] == -1.)
-      cout << '-';
+      std::cout << '-';
 
     // Don't show coefficient if it's 1
     else if (coordinates[i] != 1.)
-      cout << coordinates[i];
+      std::cout << coordinates[i];
    
     // Dump this coefficient
-    cout << 'x' << i+1 << " + ";
+    std::cout << 'x' << i+1 << " + ";
 
   }
 
   // Don't dump constant if it's 0
   if (coordinates[i] != 0.)
-    cout << coordinates[i];
+    std::cout << coordinates[i];
  
   // Dump end of equation
-  cout << " > 0";
+  std::cout << " > 0";
 
 } //==== Halfspace:DumpEquation() ====//
 

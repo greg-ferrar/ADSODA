@@ -2,7 +2,7 @@
 
 //1#include "PtrList.h"
 
-//=========================== Prototypes ===============================\\
+//=========================== Prototypes ===============================//
 
 void FindAllIntersections(PtrList all_hp,
 							PtrList intersected_hp,

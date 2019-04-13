@@ -14,14 +14,14 @@
 #include "debug.h"
 
 #include <stdlib.h>
-#include <iostream.h>
+#include <iostream>
 #include <float.h>
 #include <stdio.h>
-#include <algo.h>
+//#include <algo.h>
 #include <math.h>
 
-#include <gl.h>        /* graphics library    */
-#include <glut.h>
+#include <OpenGL/gl.h>        /* graphics library    */
+#include <GLUT/glut.h>
 
 //============================= Protypes ============================//
 
@@ -92,7 +92,7 @@ Solid::Solid(Solid& solid)
   color = solid.color;
 
   // Copy the faces
-  for (vector<Face *>::iterator face = solid.faces.begin(); face != solid.faces.end(); face++)    
+  for (std::vector<Face *>::iterator face = solid.faces.begin(); face != solid.faces.end(); face++)    
     AddFace(new Face(**face));
 
   //  No silhouette computed yet
@@ -117,11 +117,11 @@ Solid::~Solid(void)
 {
 
   // delete all faces from the faces list
-  for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++)
+  for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++)
     delete(*face);
 
   // delete all corners in the corners list
-  for (vector<Vector *>::iterator corner = corners.begin(); corner != corners.end(); corner++)
+  for (std::vector<Vector *>::iterator corner = corners.begin(); corner != corners.end(); corner++)
     delete(*corner);
 
   //  Get rid of silhouette, if any
@@ -140,7 +140,7 @@ Solid::~Solid(void)
 //| Parameters: returns the corners vector
 //|_________________________________________________________________________________
 
-const vector<Vector *> &Solid::Corners(void) const {
+const std::vector<Vector *> &Solid::Corners(void) const {
   
   return corners;
   
@@ -223,7 +223,7 @@ void Solid::GetColor(Color& the_color)
 //|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //| Solid::DumpAdjacencies
 //|
-//| Purpose: This method dumps all the adjacency relationships of a solid to cout.
+//| Purpose: This method dumps all the adjacency relationships of a solid to std::cout.
 //|
 //| Parameters: none
 //|_________________________________________________________________________________
@@ -231,39 +231,39 @@ void Solid::GetColor(Color& the_color)
 void Solid::DumpAdjacencies(void)
 {
   
-  for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
+  for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
 
     // Get this face
     Face *this_face = *face;
     
-    cout << "Face: ";
+    std::cout << "Face: ";
     this_face->DumpEquation();
-    cout << "\n\n";
+    std::cout << "\n\n";
     
-    cout << "  Adjacent faces:  ";
+    std::cout << "  Adjacent faces:  ";
     
     //    long j;
     //    for (j = 1; j <= this_face->adjacent_faces.NumElements(); j++) {
     //      ((Face *) this_face->adjacent_faces.Element(j))->DumpEquation();
-    //      cout << "\n                   ";
+    //      std::cout << "\n                   ";
     //    }
   
-    cout << "\n\n  Touching corners:  ";
+    std::cout << "\n\n  Touching corners:  ";
     
-    for (vector<Vector *>::iterator corner = this_face->touching_corners.begin();
+    for (std::vector<Vector *>::iterator corner = this_face->touching_corners.begin();
 	 corner != this_face->touching_corners.end();
 	 corner++) {
       
-      cout << '(';
+      std::cout << '(';
       
       long k;
       for (k = 0; k < (*corner)->Dimension() - 1; k++)
-	cout << (*corner)->coordinates[k] << ", ";
+	std::cout << (*corner)->coordinates[k] << ", ";
 
-      cout << (*corner)->coordinates[k] << ")\n                     ";
+      std::cout << (*corner)->coordinates[k] << ")\n                     ";
     }
    
-    cout << "\n\n";
+    std::cout << "\n\n";
     
   }
    
@@ -274,7 +274,7 @@ void Solid::DumpAdjacencies(void)
 //|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //| Solid::DumpFaces
 //|
-//| Purpose: This method dumps the faces of this Solid to cout.
+//| Purpose: This method dumps the faces of this Solid to std::cout.
 //|
 //| Parameters: none
 //|_________________________________________________________________________________
@@ -282,12 +282,12 @@ void Solid::DumpAdjacencies(void)
 void Solid::DumpFaces(void)
 {
   
-  for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
+  for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
     (*face)->DumpEquation();
-    cout << '\n';
+    std::cout << '\n';
   }
   
-  cout << '\n';
+  std::cout << '\n';
    
 } //==== Solid::DumpFaces() ====//
 
@@ -329,22 +329,22 @@ void Solid::FindAdjacencies(void)
   register long i;
   
   //  delete all corners in this list
-  for (vector<Vector *>::iterator corner = corners.begin(); corner != corners.end(); corner++)
+  for (std::vector<Vector *>::iterator corner = corners.begin(); corner != corners.end(); corner++)
     delete(*corner);
   corners.erase(corners.begin(), corners.end());
 
   //  Loop through all faces of this Solid
-  vector<Face *>::iterator face;
+  std::vector<Face *>::iterator face;
   for (face = faces.begin(); face != faces.end(); face++) {
     
     // Clear touching corners and adjacent faces list for this face
-    vector<Vector *> &tcorners = (*face)->touching_corners;
-    //    for (vector<Vector *>::iterator tcorner = tcorners.begin(); tcorner != tcorners.end(); tcorner++)
+    std::vector<Vector *> &tcorners = (*face)->touching_corners;
+    //    for (std::vector<Vector *>::iterator tcorner = tcorners.begin(); tcorner != tcorners.end(); tcorner++)
     //      delete(*tcorner);
     tcorners.erase(tcorners.begin(), tcorners.end());
 
-    vector<Face *> &afaces = (*face)->adjacent_faces;
-//    for (vector<Face *>::iterator aface = afaces.begin(); aface != afaces.end(); aface++)
+    std::vector<Face *> &afaces = (*face)->adjacent_faces;
+//    for (std::vector<Face *>::iterator aface = afaces.begin(); aface != afaces.end(); aface++)
     //      delete(*aface);
     afaces.erase(afaces.begin(), afaces.end());
 
@@ -362,7 +362,7 @@ void Solid::FindAdjacencies(void)
   //
 
   //  This is the list of Faces to intersect.
-  vector<Face *> intersected_faces;
+  std::vector<Face *> intersected_faces;
 
   //  Allocate space for the indices array
   register unsigned long *indices = (unsigned long *) malloc(dimension * sizeof(unsigned long));
@@ -466,12 +466,12 @@ void Solid::FindAdjacencies(void)
 //|             contributing_faces: the Faces whose intersection is corner
 //|_________________________________________________________________________________
 
-void Solid::ProcessCorner(Vector *corner, vector<Face *>& contributing_faces)
+void Solid::ProcessCorner(Vector *corner, std::vector<Face *>& contributing_faces)
 {
 
   //  If this point is not in the intersection of all the faces of this Solid, it is
   //    not a corner, and we should delete it and ignore it.
-  if (!corner->InsideOrOnHalfspaces(*((vector<Halfspace *> *) &faces))) {
+  if (!corner->InsideOrOnHalfspaces(*((std::vector<Halfspace *> *) &faces))) {
     delete(corner);
     return;
   } 
@@ -483,7 +483,7 @@ void Solid::ProcessCorner(Vector *corner, vector<Face *>& contributing_faces)
   corners.push_back(corner);
 
   //  Loop through all contributing Faces
-  for (vector<Face *>::iterator face = contributing_faces.begin(); face != contributing_faces.end(); face++) {
+  for (std::vector<Face *>::iterator face = contributing_faces.begin(); face != contributing_faces.end(); face++) {
     
     //    Face *this_face = (Face *)contributing_faces.Element(i);
   
@@ -497,13 +497,13 @@ void Solid::ProcessCorner(Vector *corner, vector<Face *>& contributing_faces)
     (*face)->touching_corners.push_back(corner);
 
     // Loop through all contributing faces
-    for (vector<Face *>::iterator aface = contributing_faces.begin(); aface != contributing_faces.end(); aface++) {
+    for (std::vector<Face *>::iterator aface = contributing_faces.begin(); aface != contributing_faces.end(); aface++) {
       
       //  Don't add a Face to its own adjacent_faces list
       if (face != aface) {
  
 	//  Add this Face to the adjacent_faces list for this Face, if it's not already there.
-	vector<Face *>::iterator findi = (*face)->adjacent_faces.begin();
+	std::vector<Face *>::iterator findi = (*face)->adjacent_faces.begin();
 	for ( ; findi != (*face)->adjacent_faces.end(); findi++)
 	  if (*findi == *aface)
 	    break;
@@ -614,7 +614,7 @@ int CompareCornersRoughly(const void *corner1, const void *corner2)
 //|                               color of projected Faces.
 //|_________________________________________________________________________________
 
-void Solid::Project(vector<Solid *>& projected_solids, vector<Light>& lights, const Color &ambient) {
+void Solid::Project(std::vector<Solid *>& projected_solids, std::vector<Light>& lights, const Color &ambient) {
 
   //
   //
@@ -655,7 +655,7 @@ void Solid::Project(vector<Solid *>& projected_solids, vector<Light>& lights, co
   
 
   //  Loop through all faces of this Solid
-  for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
+  for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
     
     //  Construct the projection of this face
     Solid *projection = new Solid(dimension-1);
@@ -686,14 +686,14 @@ void Solid::Project(vector<Solid *>& projected_solids, vector<Light>& lights, co
     double lights_green = ambient.green;
     double lights_blue = ambient.blue;
     register unsigned long k;
-    for (vector<Light>::iterator light = lights.begin(); light != lights.end(); light++)
+    for (std::vector<Light>::iterator light = lights.begin(); light != lights.end(); light++)
       (*light).Apply(normalized_normal, lights_red, lights_green, lights_blue);
     
     //  Adjust face color according to light intensity
     projection->SetColor(color.red * lights_red, color.green * lights_green, color.blue * lights_blue);
 
     //  Loop through all adjacent faces
-    for (vector<Face *>::iterator aface = this_face->adjacent_faces.begin();
+    for (std::vector<Face *>::iterator aface = this_face->adjacent_faces.begin();
 	 aface != this_face->adjacent_faces.end();
 	 aface++) {
       
@@ -701,9 +701,9 @@ void Solid::Project(vector<Solid *>& projected_solids, vector<Light>& lights, co
       Face *projection_face = new Face(dimension-1);
       
       //  Compute repeated terms
-      //      cout << "dimension: " << dimension << endl;
-      //      cout << "this_face: " << (unsigned long) this_face << endl;
-      //      cout << "(*aface): " << (unsigned long) (*aface) << endl;
+      //      std::cout << "dimension: " << dimension << endl;
+      //      std::cout << "this_face: " << (unsigned long) this_face << endl;
+      //      std::cout << "(*aface): " << (unsigned long) (*aface) << endl;
       double an = this_face->coordinates[dimension-1];
       double bn = (*aface)->coordinates[dimension-1];
 
@@ -722,15 +722,15 @@ void Solid::Project(vector<Solid *>& projected_solids, vector<Light>& lights, co
    
       //  Loop through all corners which touch this_face
       bool corner_found = false;
-      vector<Vector *>::iterator corner = this_face->touching_corners.begin();
+      std::vector<Vector *>::iterator corner = this_face->touching_corners.begin();
       for (; corner != this_face->touching_corners.end(); corner++) {
 
 	if (corner_found)
 	  break;
  
 	//  Check if this corner also touches the adjacent face    
-	vector<Vector *> &tcorners = (*aface)->touching_corners;
-	vector<Vector *>::iterator tc;
+	std::vector<Vector *> &tcorners = (*aface)->touching_corners;
+	std::vector<Vector *>::iterator tc;
 	for (tc = tcorners.begin(); tc != tcorners.end(); tc++)
 	  if (*tc == *corner)
 	    break;
@@ -818,11 +818,11 @@ void Solid::FindSilhouette(void) {
 
   //  VERIFY(this);
 
-  Debug("FindSilhouette: this=" << this << "; dimension=" << dimension << endl);
+  Debug("FindSilhouette: this=" << this << "; dimension=" << dimension << std::endl);
 
   //  Get rid of any silhouette which exists
   if (silhouette) {
-    Debug("deleting Solid: " << silhouette << endl);
+    Debug("deleting Solid: " << silhouette << std::endl);
     delete(silhouette);
   }
 
@@ -838,7 +838,7 @@ void Solid::FindSilhouette(void) {
   EnsureAdjacencies();
 
   //  Loop through all faces of this Solid
-  for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
+  for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
 
     Face *this_face = *face;
 
@@ -847,7 +847,7 @@ void Solid::FindSilhouette(void) {
       continue;
     
     //  Loop through all adjacent faces
-    for (vector<Face *>::iterator aface = this_face->adjacent_faces.begin();
+    for (std::vector<Face *>::iterator aface = this_face->adjacent_faces.begin();
 	 aface != this_face->adjacent_faces.end();
 	 aface++) {
    
@@ -889,8 +889,8 @@ void Solid::FindSilhouette(void) {
 	Vector *corner = (Vector *) this_face->touching_corners[k-1];
     
 	//  Check if this corner also touches the adjacent face
-	vector<Vector *> &tcorners = (*aface)->touching_corners;
-	vector<Vector *>::iterator tc;
+	std::vector<Vector *> &tcorners = (*aface)->touching_corners;
+	std::vector<Vector *>::iterator tc;
 	for (tc = tcorners.begin(); tc != tcorners.end(); tc++)
 	  if (*tc == corner)
 	    break;
@@ -956,7 +956,7 @@ void Solid::Translate(Vector& offset)
 {
 
   // Translate all faces
-  for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++)
+  for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++)
     (*face)->Translate(offset);
 
   adjacencies_valid = false;
@@ -977,7 +977,7 @@ void Solid::Transform(const AMatrix& m)
 {
 
   // Transform all faces
-  for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++)
+  for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++)
     (*face)->Transform(m);
 
   adjacencies_valid = false;
@@ -1048,15 +1048,15 @@ int Solid::OrderSolids(Solid& solid)
   //
   
   //  Loop through all corners in this Solid
-  vector<Vector *>::iterator corner;
+  std::vector<Vector *>::iterator corner;
   for (corner = corners.begin(); corner != corners.end(); corner++) {
   
     //  Check if this corner is in the silhouette of solid; if not, check next corner
-    if (!(*corner)->InsideHalfspaces(*((vector<Halfspace *> *) &(solid.silhouette->faces))))
+    if (!(*corner)->InsideHalfspaces(*((std::vector<Halfspace *> *) &(solid.silhouette->faces))))
       continue;
   
     //  Loop through all faces of solid
-    for (vector<Face *>::iterator face = solid.faces.begin(); face != solid.faces.end(); face++) {
+    for (std::vector<Face *>::iterator face = solid.faces.begin(); face != solid.faces.end(); face++) {
   
       //  If this is a backface, and if corner is behind it,
       //   then this Solid must be behind solid      
@@ -1087,11 +1087,11 @@ int Solid::OrderSolids(Solid& solid)
   for (corner = solid.corners.begin(); corner != solid.corners.end(); corner++) {
     
     //  If this corner is not in silhouette of this Solid, check next corner
-    if (!(*corner)->InsideHalfspaces(*((vector<Halfspace *> *) &(silhouette->faces))))
+    if (!(*corner)->InsideHalfspaces(*((std::vector<Halfspace *> *) &(silhouette->faces))))
 	continue;
     
     //  Loop through all faces of this Solid
-    for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
+    for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
   
       //  If this is a backface, and if corner is behind it, then solid must be behind this Solid
       if ((*face)->coordinates[dimension-1] <= 0)
@@ -1132,9 +1132,9 @@ void Solid::Duplicate(Solid& copy)
   copy.dimension = dimension;
 
   //  Copy the faces and corners
-  for (vector<Face *>::iterator face = copy.faces.begin(); face != copy.faces.end(); face++)
+  for (std::vector<Face *>::iterator face = copy.faces.begin(); face != copy.faces.end(); face++)
     AddFace(new Face(**face));
-  for (vector<Vector *>::iterator corner = copy.corners.begin(); corner != copy.corners.end(); corner++)
+  for (std::vector<Vector *>::iterator corner = copy.corners.begin(); corner != copy.corners.end(); corner++)
     corners.push_back(new Vector(**corner));
 
   adjacencies_valid = false;
@@ -1154,7 +1154,7 @@ void Solid::Duplicate(Solid& copy)
 //|             difference: receives difference (a collection of Solids)
 //|_________________________________________________________________________________
 
-void Solid::Subtract(Solid& solid, vector<Solid *>& difference)
+void Solid::Subtract(Solid& solid, std::vector<Solid *>& difference)
 {
 
   //  Make a copy of this Solid
@@ -1164,7 +1164,7 @@ void Solid::Subtract(Solid& solid, vector<Solid *>& difference)
   //  return;
 
   //  Loop through all faces of solid
-  for (vector<Face *>::iterator face = solid.faces.begin(); face != solid.faces.end(); face++) {
+  for (std::vector<Face *>::iterator face = solid.faces.begin(); face != solid.faces.end(); face++) {
   
     Solid *insideSolid;
     Solid *outsideSolid;
@@ -1242,7 +1242,7 @@ void Solid::ScanConvert(Voxel *voxel_array, long *minimum, long *maximum)
     
     //  If we're inside the solid, mark it the color of
     //    this solid.
-    if (point->InsideOrOnHalfspaces(*((vector<Halfspace *> *) &faces)))
+    if (point->InsideOrOnHalfspaces(*((std::vector<Halfspace *> *) &faces)))
       *voxel_array_element = color;
   
     //  Go to next voxel array element
@@ -1304,7 +1304,7 @@ Vector *polygonNormal3D;
 
 void DumpVector3D(const Vector &v) {
 
-  cout << "(" << v.coordinates[0] << ", " << v.coordinates[1] << ", " << v.coordinates[2] << ")";
+  std::cout << "(" << v.coordinates[0] << ", " << v.coordinates[1] << ", " << v.coordinates[2] << ")";
 }
 
 bool debugTheta = false;
@@ -1351,7 +1351,7 @@ public:
 };
 
 
-void Solid::DrawUsingOpenGL3D(vector<Light>& lights, const Color &ambient, bool outline, bool fill)
+void Solid::DrawUsingOpenGL3D(std::vector<Light>& lights, const Color &ambient, bool outline, bool fill)
 {
 
   //  EnsureAdjacencies();
@@ -1362,9 +1362,9 @@ void Solid::DrawUsingOpenGL3D(vector<Light>& lights, const Color &ambient, bool 
   Vector normalized_normal(3);
 
   // Draw all faces
-  vector<Vector *> vertices;
+  std::vector<Vector *> vertices;
   int i = 0;
-  for (vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
+  for (std::vector<Face *>::iterator face = faces.begin(); face != faces.end(); face++) {
 
     i++;
 
@@ -1388,7 +1388,7 @@ void Solid::DrawUsingOpenGL3D(vector<Light>& lights, const Color &ambient, bool 
     double lights_green = ambient.green;
     double lights_blue = ambient.blue;
     //    register unsigned long k;
-    for (vector<Light>::iterator light = lights.begin(); light != lights.end(); light++)
+    for (std::vector<Light>::iterator light = lights.begin(); light != lights.end(); light++)
       (*light).Apply(normalized_normal, lights_red, lights_green, lights_blue);
     
     //  Adjust face color according to light intensity
@@ -1407,7 +1407,7 @@ void Solid::DrawUsingOpenGL3D(vector<Light>& lights, const Color &ambient, bool 
     p2 = (*face)->touching_corners[1];
     polygonNormal3D = *face;
     p1p2 = new Vector(*p2 - *p1);
-    vector<Vector *>::iterator corner = (*face)->touching_corners.begin();
+    std::vector<Vector *>::iterator corner = (*face)->touching_corners.begin();
     corner++;
     for (; corner != (*face)->touching_corners.end(); corner++)
       vertices.push_back(*corner);
@@ -1423,7 +1423,7 @@ void Solid::DrawUsingOpenGL3D(vector<Light>& lights, const Color &ambient, bool 
       glBegin(GL_POLYGON);
       //      bgnpolygon();
       GLPoint3D(*p1, false);
-      for (vector<Vector *>::iterator vertex = vertices.begin(); vertex != vertices.end(); vertex++)
+      for (std::vector<Vector *>::iterator vertex = vertices.begin(); vertex != vertices.end(); vertex++)
 	GLPoint3D(**vertex, false);
       GLPoint3D(*p1, false);
       //      endpolygon();
@@ -1438,7 +1438,7 @@ void Solid::DrawUsingOpenGL3D(vector<Light>& lights, const Color &ambient, bool 
       glBegin(GL_LINE_LOOP);
       GLColor(1, 1, 1);
       GLPoint3D(*p1, false);
-      for (vector<Vector *>::iterator vertex = vertices.begin(); vertex != vertices.end(); vertex++)
+      for (std::vector<Vector *>::iterator vertex = vertices.begin(); vertex != vertices.end(); vertex++)
 	GLPoint3D(**vertex, false);
       GLPoint3D(*p1, false);
       glEnd();
@@ -1462,7 +1462,7 @@ void GLPoint3D(const Vector &p, bool dump) {
 
   if (dump) {
     double thetap = Theta(p);
-    cout << " (" << pf[0] << ", " << pf[1] << ", " << pf[2] << ") [" << thetap << "]  " << endl;
+    std::cout << " (" << pf[0] << ", " << pf[1] << ", " << pf[2] << ") [" << thetap << "]  " << std::endl;
   }
 
   //  v3f(pf);
@@ -1507,12 +1507,12 @@ void Solid::DrawUsingOpenGL2D(bool outline, bool fill)
   sort(corners.begin(), corners.end(), YGreater());
 
   // Create lists of points for left and right sides of the polygon
-  vector<Vector *> left_side;
-  vector<Vector *> right_side;
+  std::vector<Vector *> left_side;
+  std::vector<Vector *> right_side;
  
   // Get top and bottom points of polygon
-  vector<Vector *>::iterator topCorner = (vector<Vector *>::iterator) corners.begin();
-  vector<Vector *>::iterator bottomCorner = (vector<Vector *>::iterator) corners.end();
+  std::vector<Vector *>::iterator topCorner = (std::vector<Vector *>::iterator) corners.begin();
+  std::vector<Vector *>::iterator bottomCorner = (std::vector<Vector *>::iterator) corners.end();
   bottomCorner--;
 
   // Both sides start with the top point
@@ -1526,7 +1526,7 @@ void Solid::DrawUsingOpenGL2D(bool outline, bool fill)
   double *bottom_point_coords = (*bottomCorner)->coordinates;
  
   // Loop through all points except top and bottom, in top-to-bottom order
-  vector<Vector *>::iterator corner = topCorner;
+  std::vector<Vector *>::iterator corner = topCorner;
   corner++;
   for (; corner != bottomCorner; corner++) {
   
@@ -1561,7 +1561,7 @@ void Solid::DrawUsingOpenGL2D(bool outline, bool fill)
     // Draw path down left side
     glBegin(GL_POLYGON);
     
-    vector<Vector *>::iterator p;
+    std::vector<Vector *>::iterator p;
     for (p = left_side.begin(); p != left_side.end(); p++)
       GLPoint2D(**p);
     
@@ -1585,7 +1585,7 @@ void Solid::DrawUsingOpenGL2D(bool outline, bool fill)
     glLineWidth(2);
     glBegin(GL_LINE_LOOP);
     
-    vector<Vector *>::iterator p;
+    std::vector<Vector *>::iterator p;
     for (p = left_side.begin(); p != left_side.end(); p++)
       GLPoint2D(**p);
     

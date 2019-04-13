@@ -34,7 +34,7 @@ Vector::Vector(long dim)
   coordinates = (double *) malloc(dim * sizeof(double));
   ASSERT(coordinates != NULL);
 
-}	//==== Vector::Vector() ====\\
+} //==== Vector::Vector() ====//
 
 
 
@@ -77,7 +77,7 @@ Vector::~Vector(void)
   // Free memory used by coordinates
   free(coordinates);
 	
-}	//==== Vector::~Vector() ====\\
+} //==== Vector::~Vector() ====//
 
 
 
@@ -95,7 +95,7 @@ long Vector::Dimension(void) const
   // Return the dimension of this vector
   return dimension;
 	
-}  //==== Vector::Dimension() ====\\
+}  //==== Vector::Dimension() ====//
 
 
 
@@ -121,7 +121,7 @@ double Vector::Magnitude(void) const
   //  Return square root of the sum as length  
   return sqrt(sum);
 	
-}	//==== Vector::Magnitude() ====\\
+} //==== Vector::Magnitude() ====//
 
 
 
@@ -144,7 +144,7 @@ void Vector::Normalize(void)
   for (i = 0; i < dimension; i++)
     coordinates[i] /= length;
 	
-}  //==== Vector::Normalize() ====\\
+}  //==== Vector::Normalize() ====//
 
 
 
@@ -160,7 +160,7 @@ void Vector::Normalize(void)
 //|             returns FALSE if there is no solution, or multiple solutions
 //|_________________________________________________________________________________
 
-bool Vector::IntersectHyperplanes(vector<Face *>& hyperplanes)
+bool Vector::IntersectHyperplanes(std::vector<Face *>& hyperplanes)
 {
 
   // Allocate memory for a system of equations
@@ -190,7 +190,7 @@ bool Vector::IntersectHyperplanes(vector<Face *>& hyperplanes)
   
   return (!valid);
 
-}  //==== Vector::IntersectHyperplanes() ====\\
+}  //==== Vector::IntersectHyperplanes() ====//
 
 
 
@@ -228,7 +228,7 @@ bool Vector::InsideHalfspace(Halfspace& halfspace)
 	
   return (result > VERY_SMALL_NUM);
 
-}  //==== Vector::InsideHalfspace() ====\\
+}  //==== Vector::InsideHalfspace() ====//
 
 
 
@@ -245,17 +245,17 @@ bool Vector::InsideHalfspace(Halfspace& halfspace)
 //|             returns true if point is inside all halfspaces
 //|_________________________________________________________________________________
 
-bool Vector::InsideHalfspaces(vector<Halfspace *>& halfspaces) {
+bool Vector::InsideHalfspaces(std::vector<Halfspace *>& halfspaces) {
 
   // See if there's any halfspace that this vector is NOT inside; if so, return FALSE
-  for (vector<Halfspace *>::iterator halfspace = halfspaces.begin(); halfspace != halfspaces.end(); halfspace++)
+  for (std::vector<Halfspace *>::iterator halfspace = halfspaces.begin(); halfspace != halfspaces.end(); halfspace++)
     if (!InsideHalfspace(**halfspace))
       return false;
   
   // Otherwise, it's inside all the halfspaces
   return true;
 	
-}  //==== Vector::InsideHalfspaces() ====\\
+}  //==== Vector::InsideHalfspaces() ====//
 
 
 
@@ -291,7 +291,7 @@ bool Vector::InsideOrOnHalfspace(Halfspace& halfspace)
 	
   return (result > -VERY_SMALL_NUM);
 
-}  //==== Vector::InsideOrOnHalfspace() ====\\
+}  //==== Vector::InsideOrOnHalfspace() ====//
 
 
 
@@ -306,17 +306,17 @@ bool Vector::InsideOrOnHalfspace(Halfspace& halfspace)
 //|             returns true if point is inside or on all halfspaces
 //|_________________________________________________________________________________
 
-bool Vector::InsideOrOnHalfspaces(vector<Halfspace *>& halfspaces) {
+bool Vector::InsideOrOnHalfspaces(std::vector<Halfspace *>& halfspaces) {
 
   // See if there's any halfspace that this vector is NOT inside or on; if so, return false
-  for (vector<Halfspace *>::iterator halfspace = halfspaces.begin(); halfspace != halfspaces.end(); halfspace++)
+  for (std::vector<Halfspace *>::iterator halfspace = halfspaces.begin(); halfspace != halfspaces.end(); halfspace++)
     if (!InsideOrOnHalfspace(**halfspace))
       return false;
 
   // Otherwise, it's inside or on all the halfspaces
   return true;
 	
-}  //==== Vector::InsideOrOnHalfspaces() ====\\
+}  //==== Vector::InsideOrOnHalfspaces() ====//
 
 
 
@@ -343,7 +343,7 @@ Vector operator+(const Vector &v1, const Vector &v2)
 
   return sum;
 	
-}  //==== Vector operator+ ====\\
+}  //==== Vector operator+ ====//
 
 
 
@@ -370,7 +370,7 @@ Vector operator-(const Vector &v1, const Vector &v2)
 	
   return difference;
 	
-}  //==== Vector operator- ====\\
+}  //==== Vector operator- ====//
 
 
 
@@ -396,7 +396,7 @@ double operator*(const Vector &v1, const Vector &v2)
 
   return dotProduct;
 	
-}  //==== Vector operator* ====\\
+}  //==== Vector operator* ====//
 
 
 
@@ -428,7 +428,7 @@ Vector operator-(const Vector &v)
 
   return negative;
 
-}  //==== Vector operator- ====\\
+}  //==== Vector operator- ====//
 
 
 
@@ -447,7 +447,7 @@ void Vector::operator = (const Vector& v)
   // Copy the coordinates
   memmove(coordinates, v.coordinates, dimension * sizeof(double));
 
-}  //==== Vector operator = ====\\
+}  //==== Vector operator = ====//
 
 
 
@@ -470,5 +470,5 @@ Vector Vector::CrossProduct3D(const Vector& v) const {
   
   return crossProduct;
 
-}  //==== Vector::CrossProduct3D() ====\\
+}  //==== Vector::CrossProduct3D() ====//
 

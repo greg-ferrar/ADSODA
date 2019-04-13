@@ -12,7 +12,7 @@
 
 
 #include "adsoda_types.h"
-#include <vector.h>
+#include <vector>
 
 class Halfspace;
 class PtrList;
@@ -40,12 +40,12 @@ public:
 
   Vector CrossProduct3D(const Vector &v) const;
   
-  bool IntersectHyperplanes(vector<Face *>& hyperplanes);
+  bool IntersectHyperplanes(std::vector<Face *>& hyperplanes);
   
   bool InsideHalfspace(Halfspace& halfspace);
-  bool InsideHalfspaces(vector<Halfspace *>& halfspaces);
+  bool InsideHalfspaces(std::vector<Halfspace *>& halfspaces);
   bool InsideOrOnHalfspace(Halfspace& halfspace);
-  bool InsideOrOnHalfspaces(vector<Halfspace *>& halfspaces);
+  bool InsideOrOnHalfspaces(std::vector<Halfspace *>& halfspaces);
   
   void operator= (const Vector &v);
 

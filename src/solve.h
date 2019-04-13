@@ -11,7 +11,7 @@
 //#define VERY_SMALL_NUM	1E-15
 
 
-//======================= Types ==========================\\
+//======================= Types ==========================//
 
 //
 //  An Equation is an array of doubles.  The first n elements ai are coefficients of
@@ -24,7 +24,7 @@
 typedef double *Equation;			
 
 
-//======================= Prototypes ==========================\\
+//======================= Prototypes ==========================//
 
 long SolveEquations(long n, Equation *ABMATRIX, double *X);
 

@@ -1,5 +1,5 @@
-#include <iostream.h>
-#include <glut.h>
+#include <iostream>
+#include <GLUT/glut.h>
 #include "state.h"
 
 

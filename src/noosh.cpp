@@ -108,8 +108,9 @@
 #include <math.h>
 #include <sys/time.h>
 #include <stdio.h>
-#include <glut.h>
+#include <GLUT/glut.h>
 #include <unistd.h>
+#include <cmath>
 
 #ifdef SOUND
 /*
@@ -130,10 +131,13 @@
 #define  MIN(x,y)         (((x)<(y))?(x):(y))
 #define  FOR(a,b,c)       for((a)=(b);(a)<(c);(a)++)
 #define  DOT(p,q)         ((p)[0]*(q)[0]+(p)[1]*(q)[1]+(p)[2]*(q)[2])
-#define  NRM(p)           fsqrt(DOT((p),(p)))
+//#define  NRM(p)           fsqrt(DOT((p),(p)))
+#define  NRM(p)           sqrt(DOT((p),(p)))
 #define  DG            M_PI/180
-#define  S(u)          fsin(u*DG)
-#define  C(u)          fcos(u*DG)
+//#define  S(u)          fsin(u*DG)
+#define  S(u)          sin(u*DG)
+//#define  C(u)          fcos(u*DG)
+#define  C(u)          cos(u*DG)
 #define  CLAMP(x,u,v) (x<u? u : (x>v ? v: x))
 
 /* global variables ... add new ones on top of the stack */
@@ -322,9 +326,9 @@ void audioclean(void){
 #endif
 }
 
-void parseArgs(State &state, int numArgs, const char **args);
+void parseArgs(State &state, int numArgs, char **args);
 
-void arguments(int argc,char **argv){
+void arguments(int argc, char **argv){
 
 #if 0
   extern char *optarg;
@@ -645,7 +649,7 @@ State *nooshState = NULL;
 
 void initState(State &state);
 
-void main(int argc, char **argv){  
+int main(int argc, char **argv){  
   //   arguments(argc,argv); 
    if(caveyes)
 #ifdef CAVE
@@ -727,7 +731,7 @@ void drawDemoFrame(void);
 void parseArgs(State &state, char *arg_string);
 void initState(State &state);
 
-#include <iostream.h>
+#include <iostream>
 
 void ADSODA_dsp() {
 
@@ -756,6 +760,9 @@ void ADSODA_ffn(void) {
   static float last_joyy;
 
   //  cout << "CAVE_JOYSTICK_Y: " << CAVE_JOYSTICK_Y << endl;
+
+#define CAVE_JOYSTICK_X 0
+#define CAVE_JOYSTICK_Y 0
 
   if ((CAVE_JOYSTICK_Y < -0.8) && (last_joyy >= -0.8))
     s_state.outlinePolys = !s_state.outlinePolys;

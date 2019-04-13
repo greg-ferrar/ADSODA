@@ -59,11 +59,11 @@ Space::Space(Space& space)
   dimension = space.dimension;
 
   // Duplicate all Solids, and add them to the copy
-  for (vector<Solid *>::iterator solid = space.solids.begin(); solid != space.solids.end(); solid++)
+  for (std::vector<Solid *>::iterator solid = space.solids.begin(); solid != space.solids.end(); solid++)
     solids.push_back(new Solid(**solid));
 
   // Duplicate all Lights, and add them to the copy
-  for (vector<Light>::iterator light = space.lights.begin(); light != space.lights.end(); light++)
+  for (std::vector<Light>::iterator light = space.lights.begin(); light != space.lights.end(); light++)
     lights.push_back(*light);
 
   ambient = space.ambient;
@@ -90,7 +90,7 @@ Space::~Space(void)
   //    delete((Light *) lights.Element(i));
 
   // delete all Solids in the solids list
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++) {
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++) {
     //    delete(*solid);
     delete(*solid);
   }
@@ -156,7 +156,7 @@ void Space::Clear(void)
 {
 
   // Remove all Solids from the list
-  //  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
+  //  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
   //    delete(*solid);
   solids.erase(solids.begin(), solids.end());
 
@@ -174,7 +174,7 @@ void Space::Clear(void)
 
 void Space::ClearAndDelete(void) {
 
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++) {
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++) {
     delete(*solid);
   }
   solids.erase(solids.begin(), solids.end());
@@ -194,7 +194,7 @@ void Space::ClearAndDelete(void) {
 void Space::EliminateEmptySolids(void) {
 
   // Loop through all Solids in this Space
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++) {
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++) {
   
     // Call EnsureAdjacencies for this Solid
     (*solid)->EnsureAdjacencies();
@@ -234,20 +234,20 @@ void Space::Subtract(Solid& solid)
 {
 
   // Create a list of Solids to receive difference of solid from Solids in this Space
-  vector<Solid *> difference;
+  std::vector<Solid *> difference;
 
   // Create a list of Solids to receive difference of solid from a single Solid
-  vector<Solid *> solid_difference;
+  std::vector<Solid *> solid_difference;
  
   //  Loop through all Solids in this Space
-  vector<Solid *>::iterator this_solid;
+  std::vector<Solid *>::iterator this_solid;
   for (this_solid = solids.begin(); this_solid != solids.end(); this_solid++) {
     
     // Subtract solid from this_solid, and put resulting Solid(s) in difference
     (*this_solid)->Subtract(solid, solid_difference);
   
     // Move all solids in the difference of solid from this_solid to the difference list
-    for (vector<Solid *>::iterator s = solid_difference.begin(); s != solid_difference.end(); s++)
+    for (std::vector<Solid *>::iterator s = solid_difference.begin(); s != solid_difference.end(); s++)
       difference.push_back(*s);
 
     solid_difference.erase(solid_difference.begin(), solid_difference.end());
@@ -261,7 +261,7 @@ void Space::Subtract(Solid& solid)
   //  solids.erase(solids.begin(), solids.end());
  
   // Copy all solids in difference to this Space
-  for (vector<Solid *>::iterator diffi = difference.begin(); diffi != difference.end(); diffi++)
+  for (std::vector<Solid *>::iterator diffi = difference.begin(); diffi != difference.end(); diffi++)
     solids.push_back(*diffi);
 
 } //==== Space::Subtract() ====//
@@ -281,7 +281,7 @@ void Space::Add(Space& space)
 {
 
   // Add all solids in space to this space
-  for (vector<Solid *>::iterator solid = space.solids.begin(); solid != space.solids.end(); solid++)
+  for (std::vector<Solid *>::iterator solid = space.solids.begin(); solid != space.solids.end(); solid++)
     AddSolid(*solid);
 
 } //==== Space::Add() ====//
@@ -307,16 +307,16 @@ void Space::Project(Space *projection)
   projection->ClearAndDelete();
 
   // Loop through all Solids in this Space
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++) {
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++) {
 
     // Create a new list for projected faces
-    vector<Solid *> projected_faces;
+    std::vector<Solid *> projected_faces;
   
     // Project this solid
     (*solid)->Project(projected_faces, lights, ambient);
   
     // Add all faces of projection as a Solid
-    for (vector<Solid *>::iterator pface = projected_faces.begin(); pface != projected_faces.end(); pface++) {
+    for (std::vector<Solid *>::iterator pface = projected_faces.begin(); pface != projected_faces.end(); pface++) {
       projection->AddSolid(*pface);
     }
 
@@ -349,12 +349,12 @@ void Space::RemoveHiddenSolids(void)
   //  sourceSpace->FindSilhouettes();
 
   // delete all Solids in this Space
-  for (vector<Solid *>::iterator deleteSolid = solids.begin(); deleteSolid != solids.end(); deleteSolid++)
+  for (std::vector<Solid *>::iterator deleteSolid = solids.begin(); deleteSolid != solids.end(); deleteSolid++)
     delete(*deleteSolid);
   Clear();
 
   // Loop through all Solids in the original Space
-  for (vector<Solid *>::iterator sourceSpaceSolid = sourceSpace->solids.begin();
+  for (std::vector<Solid *>::iterator sourceSpaceSolid = sourceSpace->solids.begin();
        sourceSpaceSolid != sourceSpace->solids.end();
        sourceSpaceSolid++) {
   
@@ -374,7 +374,7 @@ void Space::RemoveHiddenSolids(void)
     solidResult->AddSolid(clippedSolidCopy);
 
     // Loop though all Solids in this Space
-    for (vector<Solid *>::iterator clipSolid = sourceSpace->solids.begin();
+    for (std::vector<Solid *>::iterator clipSolid = sourceSpace->solids.begin();
 	 clipSolid != sourceSpace->solids.end();
 	 clipSolid++) {
    
@@ -397,7 +397,7 @@ void Space::RemoveHiddenSolids(void)
     }  // clip all solids
     
     // We have finished clipping this solid; add what remains of it to this Space.
-    for (vector<Solid *>::iterator solidResultSolid = solidResult->solids.begin();
+    for (std::vector<Solid *>::iterator solidResultSolid = solidResult->solids.begin();
 	 solidResultSolid != solidResult->solids.end();
 	 solidResultSolid++) {
       solids.push_back(new Solid(**solidResultSolid));
@@ -430,7 +430,7 @@ void Space::Transform(const AMatrix& m)
 {
 
   // Transform all solids in this space
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
     (*solid)->Transform(m);
 
 } //==== Space::Transform() ====//
@@ -454,7 +454,7 @@ void Space::DrawIntoVoxelArray(Voxel *voxel_array, long *minimum, long *maximum)
 {
 
   // Draw all solids in this space into the voxel array
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
     (*solid)->ScanConvert(voxel_array, minimum, maximum);
 
 } //==== Space::DrawIntoVoxelArray() ====//
@@ -475,7 +475,7 @@ void Space::DrawUsingOpenGL3D(bool outline, bool fill)
 {
 
   // Draw all Solids in this space
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
     (*solid)->DrawUsingOpenGL3D(lights, ambient, outline, fill);
     
 } //==== Space::DrawUsingOpenGL3D() ====//
@@ -484,7 +484,7 @@ void Space::DrawUsingOpenGL3D(bool outline, bool fill)
 void Space::EnsureAdjacencies(void) {
 
   // Draw all Solids in this space
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
     (*solid)->EnsureAdjacencies();
     
 }  //==== Space::EnsureAdjacencies() ====//
@@ -503,7 +503,7 @@ void Space::DrawUsingOpenGL2D(bool outline, bool fill)
 {
 
   // Draw all Solids in this space
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
     (*solid)->DrawUsingOpenGL2D(outline, fill);
 
 } //==== Space::DrawUsingOpenGL2D() ====//
@@ -523,7 +523,7 @@ void Space::DrawUsingOpenGL1D(bool outline, bool fill)
 {
 
   // Draw all Solids in this space
-  for (vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
+  for (std::vector<Solid *>::iterator solid = solids.begin(); solid != solids.end(); solid++)
     (*solid)->DrawUsingOpenGL1D(outline, fill);
 
 } //==== Space::DrawUsingOpenGL1D() ====//
@@ -609,14 +609,14 @@ void Space::DrawOntoBitmapX(Bitmap& bitmap)
 //|             returns false if there is no solution, or multiple solutions
 //|_________________________________________________________________________________
 
-bool Space::IntersectHyperplanes(vector<Hyperplane *>& hyperplanes, Vector& intersection) {
+bool Space::IntersectHyperplanes(std::vector<Hyperplane *>& hyperplanes, Vector& intersection) {
 
   //  Allocate space for system of equations
   Equation *system = (Equation *) malloc(dimension*sizeof(Equation));
   ASSERT(system != NULL);
 
   int i = 1;
-  for (vector<Hyperplane *>::iterator hyperplane = hyperplanes.begin();
+  for (std::vector<Hyperplane *>::iterator hyperplane = hyperplanes.begin();
        hyperplane != hyperplanes.end();
        hyperplane++) {
 
@@ -690,10 +690,10 @@ bool Space::PointInsideHalfspace(Halfspace& halfspace, Vector& point)
 //|             returns true if point is inside all halfspaces
 //|_________________________________________________________________________________
 
-bool Space::PointInsideHalfspaces(vector<Halfspace *>& halfspaces, Vector& point)
+bool Space::PointInsideHalfspaces(std::vector<Halfspace *>& halfspaces, Vector& point)
 {
 
-  for (vector<Halfspace *>::iterator halfspace = halfspaces.begin(); halfspace != halfspaces.end(); halfspace++)
+  for (std::vector<Halfspace *>::iterator halfspace = halfspaces.begin(); halfspace != halfspaces.end(); halfspace++)
 
     // this is not inside this halfspace, so it's not inside them all.
     if (!PointInsideHalfspace(**halfspace, point))
@@ -757,10 +757,10 @@ bool Space::PointInsideOrOnHalfspace(Halfspace& halfspace, Vector& point)
 //|             returns true if point is inside or on all halfspaces
 //|_________________________________________________________________________________
 
-bool Space::PointInsideOrOnHalfspaces(vector<Halfspace *>& halfspaces, Vector& point)
+bool Space::PointInsideOrOnHalfspaces(std::vector<Halfspace *>& halfspaces, Vector& point)
 {
 
-  for (vector<Halfspace *>::iterator halfspace = halfspaces.begin(); halfspace != halfspaces.end(); halfspace++)
+  for (std::vector<Halfspace *>::iterator halfspace = halfspaces.begin(); halfspace != halfspaces.end(); halfspace++)
 
     // this is not inside or on this halfspace, so it's not inside or on them all.
     if (!PointInsideOrOnHalfspace(**halfspace, point))
