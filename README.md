@@ -187,9 +187,9 @@ other adjacent frontface/backface pairs, so there are no other borders
 to the silhouette.
 
 For an *n*-dimensional solid, the faces of the solid are
-*(n-1)*-dimensional solids imbedded in *n*-space (line segments, in the
+*(n-1)*-dimensional solids embedded in *n*-space (line segments, in the
 case of **Figure 3**); the boundaries of the silhouette are
-*(n-2)*-spaces imbedded in the *(n-1)*-dimensional projection space
+*(n-2)*-spaces embedded in the *(n-1)*-dimensional projection space
 (points, in the case of **Figure 3**).
 
 As another example, consider the case of a cube in 3-space (**Figure
